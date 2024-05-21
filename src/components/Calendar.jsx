@@ -1,4 +1,32 @@
 import { useEffect } from "react";
+import styled from "styled-components";
+
+const CalendarDiv = styled.div`
+  padding: 16px;
+  background: #cbd5e1;
+`;
+
+const CalendarUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Calendarli = styled.li`
+  padding: 8px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+  width: 15%;
+  min-width: 60px;
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? "#696b6e" : "#a1aab6"};
+  color: ${({ $isSelected }) => ($isSelected ? "white" : "black")};
+  cursor: pointer;
+`;
 
 export default function Calendar({ selectedMonth, setSelectedMonth }) {
   useEffect(() => {
@@ -6,20 +34,18 @@ export default function Calendar({ selectedMonth, setSelectedMonth }) {
   }, [selectedMonth]);
 
   return (
-    <div className="p-4 bg-slate-300">
-      <ul className="flex flex-wrap gap-2 justify-center items-center">
+    <CalendarDiv>
+      <CalendarUl>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-          <li
+          <Calendarli
+            $isSelected={selectedMonth == month ? true : undefined}
             onClick={() => setSelectedMonth(month)}
-            className={`w-[15%] bg-slate-400 text-center min-w-[60px] p-2 border-2 border-solid border-slate-500 rounded-md ${
-              month == selectedMonth ? "bg-slate-600 text-white" : ""
-            }`}
             key={month}
           >
             {month}월
-          </li>
+          </Calendarli>
         ))}
-      </ul>
-    </div>
+      </CalendarUl>
+    </CalendarDiv>
   );
 }

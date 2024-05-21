@@ -50,7 +50,7 @@ export default function DataInputForm({ setRecordsData }) {
   };
 
   return (
-    <Form onSubmit={onSubmitHandler} className="flex flex-col p-8 bg-slate-300">
+    <Form onSubmit={onSubmitHandler}>
       <DataInput
         id="date"
         type="date"
