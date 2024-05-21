@@ -17,7 +17,7 @@ export default function HomePage({
         setSelectedMonth={setSelectedMonth}
       />
       <TotalOutlay />
-      <RecordsList recordsData={recordsData} />
+      <RecordsList selectedMonth={selectedMonth} recordsData={recordsData} />
     </main>
   );
 }
