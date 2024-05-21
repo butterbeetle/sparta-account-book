@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
 import DataInput from "./DataInput";
@@ -43,7 +44,7 @@ export default function DataInputForm({ setData }) {
       return;
     }
 
-    setData((prev) => [...prev, inputData]);
+    setData((prev) => [...prev, { id: uuidv4(), ...inputData }]);
 
     setInputData(initInputData);
     setError(initErrorData);
