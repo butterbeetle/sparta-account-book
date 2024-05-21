@@ -32,8 +32,7 @@ export default function DataInputForm({ setData }) {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("submit data");
-    // const { date, category, amount, content } = inputData;
+
     const validateErrors = validateInput(inputData);
 
     if (Object.values(validateErrors).some((error) => error)) {
