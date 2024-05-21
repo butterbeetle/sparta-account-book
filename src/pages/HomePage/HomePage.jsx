@@ -1,12 +1,15 @@
+import Calendar from "../../components/Calendar";
 import DataInputForm from "../../components/DataInputForm";
+import RecordsList from "../../components/RecordsList";
+import TotalOutlay from "../../components/TotalOutlay";
 
-export default function HomePage({ data, setData }) {
+export default function HomePage({ recordsData, setData }) {
   return (
     <main>
       <DataInputForm setData={setData} />
-      <div>총 지출</div>
-      <div>달력</div>
-      <div>지출 목록</div>
+      <Calendar />
+      <TotalOutlay />
+      <RecordsList recordsData={recordsData} />
     </main>
   );
 }
