@@ -26,7 +26,7 @@ const initErrorData = {
   content: false,
 };
 
-export default function DataInputForm({ setData }) {
+export default function DataInputForm({ setRecordsData }) {
   const [inputData, setInputData] = useState(initInputData);
   const [error, setError] = useState(initErrorData);
 
@@ -43,7 +43,7 @@ export default function DataInputForm({ setData }) {
       return;
     }
 
-    setData((prev) => [...prev, { id: uuidv4(), ...inputData }]);
+    setRecordsData((prev) => [...prev, { id: uuidv4(), ...inputData }]);
 
     setInputData(initInputData);
     setError(initErrorData);

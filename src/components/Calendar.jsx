@@ -1,11 +1,6 @@
-import { useEffect, useState } from "react";
-import formatDate from "../utils/formatDate";
+import { useEffect } from "react";
 
-export default function Calendar() {
-  const [selectedMonth, setSelectedMonth] = useState(
-    localStorage.getItem("selectedMonth") ?? +formatDate(new Date(), "month")
-  );
-
+export default function Calendar({ selectedMonth, setSelectedMonth }) {
   useEffect(() => {
     localStorage.setItem("selectedMonth", selectedMonth);
   }, [selectedMonth]);

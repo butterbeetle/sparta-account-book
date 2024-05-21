@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import RecordDetailPage from "./pages/RecordDetailPage/RecordDetailPage";
+import formatDate from "./utils/formatDate";
 
 const DUMMY_DATA = [
   {
@@ -57,14 +58,24 @@ const DUMMY_DATA = [
 ];
 
 export default function App() {
-  const [data, setData] = useState(DUMMY_DATA);
+  const [recordsData, setRecordsData] = useState(DUMMY_DATA);
+  const [selectedMonth, setSelectedMonth] = useState(
+    localStorage.getItem("selectedMonth") ?? +formatDate(new Date(), "month")
+  );
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={<HomePage recordsData={data} setData={setData} />}
+          element={
+            <HomePage
+              recordsData={recordsData}
+              setRecordsData={setRecordsData}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+            />
+          }
         />
         <Route path="/records/:recordId" element={<RecordDetailPage />} />
       </Routes>
