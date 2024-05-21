@@ -1,10 +1,12 @@
-export default function HomePage() {
+import DataInputForm from "../../components/DataInputForm";
+
+export default function HomePage({ data, setData }) {
   return (
     <main>
-      <div>input</div>
-      <div>div</div>
-      <div>ui</div>
-      <div>지출</div>
+      <DataInputForm setData={setData} />
+      <div>총 지출</div>
+      <div>달력</div>
+      <div>지출 목록</div>
     </main>
   );
 }
