@@ -86,7 +86,7 @@ export default function DataInput({
         type={type}
         value={inputData[id]}
         placeholder=""
-        maxLength={type === "date" ? undefined : 24}
+        maxLength={id === "content" ? 30 : 10}
         onChange={(e) => onChangeHandler(e.target.value)}
       />
       <Label htmlFor={id}>{label}</Label>

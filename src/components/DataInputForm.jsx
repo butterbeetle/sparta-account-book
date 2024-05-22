@@ -73,7 +73,6 @@ export default function DataInputForm({
   };
 
   const onDeleteHandler = () => {
-    console.log("너를 삭제하마");
     setRecordsData((prevRecords) =>
       prevRecords.filter((prevRecord) => prevRecord.id !== inputData.id)
     );

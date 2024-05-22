@@ -76,7 +76,7 @@ export default function RecordsList({ selectedMonth, recordsData }) {
                   {category} - <ContentParagraph>{content}</ContentParagraph>
                 </CategoryDiv>
               </ContentDiv>
-              <AmountParagraph>{formatAmount(amount)}</AmountParagraph>
+              <AmountParagraph>{formatAmount(+amount)}</AmountParagraph>
             </ListLi>
           </Link>
         ))}
