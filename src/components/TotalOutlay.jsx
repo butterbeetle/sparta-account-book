@@ -4,7 +4,8 @@ import formatAmount from "../utils/formatAmount";
 import getRandomHexCode from "../utils/getRandomHexCode";
 
 const ColorDiv = styled.div`
-  width: ${(props) => props.$width}%;
+  width: ${(props) => props.$width};
+  height: 16px;
   background-color: ${(props) => props.$bgColor};
 `;
 
@@ -35,16 +36,41 @@ export default function TotalOutlay({ selectedMonth, recordsData }) {
       <h1>
         {selectedMonth}월 총 지출:{formatAmount(totalAmount)}
       </h1>
-      <div className="flex w-full h-[60px]">
+      <div className="flex w-full h-[20px]">
         {Object.values(categoryRecordsData).map(({ amount, bgColor }) => (
           <ColorDiv
             key={uuidv4()}
-            $width={((amount / totalAmount) * 100).toFixed(2)}
+            $width={`${((amount / totalAmount) * 100).toFixed(2)}%`}
             $bgColor={bgColor}
           ></ColorDiv>
         ))}
       </div>
-      <div>하이 HI</div>
+      <div className="w-full flex flex-col items-start justify-center gap-1">
+        {Object.keys(categoryRecordsData).map((category) => (
+          <div
+            key={uuidv4()}
+            className="w-full flex items-center justify-between border-b-2 border-solid border-b-black "
+          >
+            <div className="flex flex-1">
+              <ColorDiv
+                $width={`16px`}
+                $bgColor={categoryRecordsData[category]["bgColor"]}
+              ></ColorDiv>
+              <div className="flex-1">{category}</div>
+            </div>
+            <div className="flex-1 text-end">
+              {formatAmount(categoryRecordsData[category]["amount"])}
+            </div>
+            <div className="flex-1 text-end">
+              {(
+                (categoryRecordsData[category]["amount"] / totalAmount) *
+                100
+              ).toFixed(2)}
+              %
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
