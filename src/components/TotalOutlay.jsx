@@ -22,7 +22,7 @@ export default function TotalOutlay({ selectedMonth, recordsData }) {
   const categoryRecordsData = filteredRecordsData.reduce(
     (acc, { category, amount }) => {
       if (acc[category]) {
-        acc[category].amount += amount;
+        acc[category].amount += +amount;
       } else {
         acc[category] = { amount, bgColor: getRandomHexCode() };
       }
@@ -59,7 +59,7 @@ export default function TotalOutlay({ selectedMonth, recordsData }) {
               <div className="flex-1">{category}</div>
             </div>
             <div className="flex-1 text-end">
-              {formatAmount(categoryRecordsData[category]["amount"])}
+              {formatAmount(+categoryRecordsData[category]["amount"])}
             </div>
             <div className="flex-1 text-end">
               {(
