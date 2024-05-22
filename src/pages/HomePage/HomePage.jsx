@@ -1,10 +1,23 @@
-export default function HomePage() {
+import Calendar from "../../components/Calendar";
+import DataInputForm from "../../components/DataInputForm";
+import RecordsList from "../../components/RecordsList";
+import TotalOutlay from "../../components/TotalOutlay";
+
+export default function HomePage({
+  recordsData,
+  setRecordsData,
+  selectedMonth,
+  setSelectedMonth,
+}) {
   return (
     <main>
-      <div>input</div>
-      <div>div</div>
-      <div>ui</div>
-      <div>지출</div>
+      <DataInputForm setRecordsData={setRecordsData} />
+      <Calendar
+        selectedMonth={selectedMonth}
+        setSelectedMonth={setSelectedMonth}
+      />
+      <TotalOutlay selectedMonth={selectedMonth} recordsData={recordsData} />
+      <RecordsList selectedMonth={selectedMonth} recordsData={recordsData} />
     </main>
   );
 }
