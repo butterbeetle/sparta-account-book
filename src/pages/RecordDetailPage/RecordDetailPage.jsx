@@ -4,7 +4,6 @@ import DataInputForm from "../../components/DataInputForm";
 export default function RecordDetailPage({ recordsData, setRecordsData }) {
   const { recordId } = useParams();
   const filteredRecord = recordsData.filter(({ id }) => id === recordId)[0];
-  const { id, date, category, amount, content } = filteredRecord;
 
   return (
     <div>
@@ -12,11 +11,6 @@ export default function RecordDetailPage({ recordsData, setRecordsData }) {
         setRecordsData={setRecordsData}
         initData={filteredRecord}
       />
-      <p>{id}</p>
-      <p>{date}</p>
-      <p>{category}</p>
-      <p>{amount}</p>
-      <p>{content}</p>
     </div>
   );
 }

@@ -60,9 +60,9 @@ const AmountParagraph = styled.p`
 `;
 
 export default function RecordsList({ selectedMonth, recordsData }) {
-  const filteredRecordsData = recordsData.filter(
-    ({ date }) => +date.split("-")[1] === +selectedMonth
-  );
+  const filteredRecordsData = recordsData
+    .filter(({ date }) => +date.split("-")[1] === +selectedMonth)
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   return (
     <RecordsListMainDiv>
