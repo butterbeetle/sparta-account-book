@@ -6,7 +6,7 @@ export default function validateInput(data) {
     error.category = true;
   }
 
-  if (!amount.length || amount <= 0 || amount % 1 !== 0) {
+  if (amount.length === 0 || amount <= 0 || amount % 1 !== 0) {
     error.amount = true;
   }
 

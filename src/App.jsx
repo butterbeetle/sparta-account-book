@@ -77,7 +77,15 @@ export default function App() {
             />
           }
         />
-        <Route path="/records/:recordId" element={<RecordDetailPage />} />
+        <Route
+          path="/records/:recordId"
+          element={
+            <RecordDetailPage
+              recordsData={recordsData}
+              setRecordsData={setRecordsData}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

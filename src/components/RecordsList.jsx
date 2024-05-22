@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import formatAmount from "../utils/formatAmount";
 
@@ -67,15 +68,17 @@ export default function RecordsList({ selectedMonth, recordsData }) {
     <RecordsListMainDiv>
       <ListUl>
         {filteredRecordsData.map(({ id, date, category, amount, content }) => (
-          <ListLi key={id}>
-            <ContentDiv>
-              <DateParagraph>{date}</DateParagraph>
-              <CategoryDiv>
-                {category} - <ContentParagraph>{content}</ContentParagraph>
-              </CategoryDiv>
-            </ContentDiv>
-            <AmountParagraph>{formatAmount(amount)}</AmountParagraph>
-          </ListLi>
+          <Link key={id} to={`/records/${id}`}>
+            <ListLi>
+              <ContentDiv>
+                <DateParagraph>{date}</DateParagraph>
+                <CategoryDiv>
+                  {category} - <ContentParagraph>{content}</ContentParagraph>
+                </CategoryDiv>
+              </ContentDiv>
+              <AmountParagraph>{formatAmount(amount)}</AmountParagraph>
+            </ListLi>
+          </Link>
         ))}
         {!filteredRecordsData.length && <div>지출이 없습니다.</div>}
       </ListUl>

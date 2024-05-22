@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import formatDate from "../utils/formatDate";
@@ -26,9 +27,18 @@ const initErrorData = {
   content: false,
 };
 
-export default function DataInputForm({ setRecordsData }) {
-  const [inputData, setInputData] = useState(initInputData);
+export default function DataInputForm({
+  setRecordsData,
+  initData = initInputData,
+}) {
+  const [inputData, setInputData] = useState(initData);
   const [error, setError] = useState(initErrorData);
+  // key값으로 id있는지 화긴
+  /**
+   * https://stackoverflow.com/questions/39282873/object-hasownproperty-yields-the-eslint-no-prototype-builtins-error-how-to
+   */
+  const isUpdate = Object.prototype.hasOwnProperty.call(initData, "id");
+  const nav = useNavigate();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -43,7 +53,20 @@ export default function DataInputForm({ setRecordsData }) {
       return;
     }
 
-    setRecordsData((prev) => [...prev, { id: uuidv4(), ...inputData }]);
+    if (isUpdate) {
+      setRecordsData((prevRecords) =>
+        prevRecords.map((prevRecord) =>
+          prevRecord.id == inputData.id ? { ...inputData } : prevRecord
+        )
+      );
+
+      nav("/");
+    } else {
+      setRecordsData((prevRecords) => [
+        ...prevRecords,
+        { id: uuidv4(), ...inputData },
+      ]);
+    }
 
     setInputData(initInputData);
     setError(initErrorData);
@@ -80,7 +103,8 @@ export default function DataInputForm({ setRecordsData }) {
         inputData={inputData}
         setInputData={setInputData}
       />
-      <button>추가</button>
+      <button>{isUpdate ? "수정" : "추가"}</button>
+      {isUpdate && <button>삭제</button>}
     </Form>
   );
 }
