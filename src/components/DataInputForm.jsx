@@ -72,6 +72,15 @@ export default function DataInputForm({
     setError(initErrorData);
   };
 
+  const onDeleteHandler = () => {
+    console.log("너를 삭제하마");
+    setRecordsData((prevRecords) =>
+      prevRecords.filter((prevRecord) => prevRecord.id !== inputData.id)
+    );
+
+    nav("/");
+  };
+
   return (
     <Form onSubmit={onSubmitHandler}>
       <DataInput
@@ -103,8 +112,12 @@ export default function DataInputForm({
         inputData={inputData}
         setInputData={setInputData}
       />
-      <button>{isUpdate ? "수정" : "추가"}</button>
-      {isUpdate && <button>삭제</button>}
+      <button type="submit">{isUpdate ? "수정" : "추가"}</button>
+      {isUpdate && (
+        <button onClick={onDeleteHandler} type="button">
+          삭제
+        </button>
+      )}
     </Form>
   );
 }
