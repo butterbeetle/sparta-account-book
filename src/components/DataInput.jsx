@@ -4,6 +4,15 @@ const Div = styled.div`
   position: relative;
 `;
 
+const Span = styled.span`
+  top: 4px;
+  right: 24px;
+  font-size: 12px;
+  line-height: 24px;
+  user-select: none;
+  color: #a1a1aa;
+`;
+
 const Label = styled.label`
   position: absolute;
   top: 16px;
@@ -79,6 +88,8 @@ export default function DataInput({
     }));
   };
 
+  const maxLength = id === "content" ? 30 : 10;
+
   return (
     <Div>
       <Input
@@ -86,7 +97,7 @@ export default function DataInput({
         type={type}
         value={inputData[id]}
         placeholder=""
-        maxLength={id === "content" ? 30 : 10}
+        maxLength={maxLength}
         onChange={(e) => onChangeHandler(e.target.value)}
       />
       <Label htmlFor={id}>{label}</Label>
@@ -94,6 +105,9 @@ export default function DataInput({
         <P className="">{`${
           type === "date" ? "를" : "을"
         } 제대로 입력해주세요.`}</P>
+      )}
+      {type !== "date" && (
+        <Span className="absolute top-0 right-0">{`${inputData[id].length}/${maxLength}`}</Span>
       )}
     </Div>
   );
