@@ -107,7 +107,9 @@ export default function DataInput({
         } 제대로 입력해주세요.`}</P>
       )}
       {type !== "date" && (
-        <Span className="absolute top-0 right-0">{`${inputData[id].length}/${maxLength}`}</Span>
+        <Span className="absolute top-0 right-0">{`${
+          (inputData[id] + "").length
+        }/${maxLength}`}</Span>
       )}
     </Div>
   );

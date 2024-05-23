@@ -3,21 +3,13 @@ import DataInputForm from "../../components/DataInputForm";
 import RecordsList from "../../components/RecordsList";
 import TotalOutlay from "../../components/TotalOutlay";
 
-export default function HomePage({
-  recordsData,
-  setRecordsData,
-  selectedMonth,
-  setSelectedMonth,
-}) {
+export default function HomePage({ setRecordsData }) {
   return (
     <main>
       <DataInputForm setRecordsData={setRecordsData} />
-      <Calendar
-        selectedMonth={selectedMonth}
-        setSelectedMonth={setSelectedMonth}
-      />
-      <TotalOutlay selectedMonth={selectedMonth} recordsData={recordsData} />
-      <RecordsList selectedMonth={selectedMonth} recordsData={recordsData} />
+      <Calendar />
+      <TotalOutlay />
+      <RecordsList />
     </main>
   );
 }

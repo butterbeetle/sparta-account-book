@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { RecordContext } from "../context/RecordContext";
 import formatAmount from "../utils/formatAmount";
 import getRandomHexCode from "../utils/getRandomHexCode";
 
@@ -15,13 +17,11 @@ const TotalOutlayGraph = styled.div`
   width: 100%;
   height: 20px;
 `;
-
 const TotalOutlayColorDiv = styled.div`
   width: ${(props) => props.$width};
   height: 16px;
   background-color: ${(props) => props.$bgColor};
 `;
-
 const TotalOutlayLegendDiv = styled.div`
   width: 100%;
   display: flex;
@@ -39,11 +39,9 @@ const TotalOutlayLegend = styled.div`
   border-style: solid;
   border-color: black;
 `;
-
 const TotalOutlayLegendFlexDiv = styled.div`
   flex: 1 1 0%;
 `;
-
 const TotalOutlayLegendCategory = styled(TotalOutlayLegendFlexDiv)`
   display: flex;
 `;
@@ -51,7 +49,11 @@ const TotalOutlayLegendText = styled(TotalOutlayLegendFlexDiv)`
   text-align: end;
 `;
 
-export default function TotalOutlay({ selectedMonth, recordsData }) {
+export default function TotalOutlay() {
+  const {
+    data: { recordsData, selectedMonth },
+  } = useContext(RecordContext);
+
   const filteredRecordsData = recordsData.filter(
     ({ date }) => +date.split("-")[1] === +selectedMonth
   );
