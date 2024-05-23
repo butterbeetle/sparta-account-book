@@ -3,10 +3,10 @@ import DataInputForm from "../../components/DataInputForm";
 import RecordsList from "../../components/RecordsList";
 import TotalOutlay from "../../components/TotalOutlay";
 
-export default function HomePage({ setRecordsData }) {
+export default function HomePage() {
   return (
     <main>
-      <DataInputForm setRecordsData={setRecordsData} />
+      <DataInputForm />
       <Calendar />
       <TotalOutlay />
       <RecordsList />
