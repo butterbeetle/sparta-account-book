@@ -64,7 +64,7 @@ export default function DataInputForm() {
 
     if (isUpdate) {
       dispatch(updateRecordDataHandler({ recordId, updatedData: inputData }));
-      nav("/");
+      nav("/", { replace: true });
     } else {
       dispatch(addRecordDataHandler({ newRecordData: inputData }));
     }
@@ -76,7 +76,7 @@ export default function DataInputForm() {
   const onDeleteHandler = () => {
     if (window.confirm("정말로 이 지출 항목을 삭제하시겠습니까?")) {
       dispatch(deleteRecordDataHandler({ recordId }));
-      nav("/");
+      nav("/", { replace: true });
     }
   };
 
