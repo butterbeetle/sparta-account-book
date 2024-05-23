@@ -75,8 +75,6 @@ export default function TotalOutlay() {
     {}
   );
 
-  console.log(categoryRecordsData);
-
   return (
     <TotalOutlayDiv>
       <h1>
