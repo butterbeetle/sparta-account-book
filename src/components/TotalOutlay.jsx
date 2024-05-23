@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { RecordContext } from "../context/RecordContext";
 import formatAmount from "../utils/formatAmount";
 import getRandomHexCode from "../utils/getRandomHexCode";
 
@@ -50,9 +49,7 @@ const TotalOutlayLegendText = styled(TotalOutlayLegendFlexDiv)`
 `;
 
 export default function TotalOutlay() {
-  const {
-    data: { recordsData, selectedMonth },
-  } = useContext(RecordContext);
+  const { selectedMonth, recordsData } = useSelector((state) => state.record);
 
   const filteredRecordsData = recordsData.filter(
     ({ date }) => +date.split("-")[1] === +selectedMonth

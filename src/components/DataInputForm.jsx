@@ -1,8 +1,14 @@
 import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import DataInput from "../components/DataInput";
 import { RecordContext } from "../context/RecordContext";
+import {
+  addRecordDataHandler,
+  deleteRecordDataHandler,
+  updateRecordDataHandler,
+} from "../redux/slices/record.slice";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
 
@@ -38,12 +44,9 @@ export default function DataInputForm() {
   const { recordId } = useParams();
   const nav = useNavigate();
 
-  const {
-    addDataHandler,
-    updateDataHandler,
-    deleteDataHandler,
-    getInitialData,
-  } = useContext(RecordContext);
+  const dispatch = useDispatch();
+
+  const { getInitialData } = useContext(RecordContext);
 
   const [inputData, setInputData] = useState(
     getInitialData(recordId) ?? initialInputsData
@@ -66,10 +69,10 @@ export default function DataInputForm() {
     }
 
     if (isUpdate) {
-      updateDataHandler(recordId, inputData);
+      dispatch(updateRecordDataHandler({ recordId, updatedData: inputData }));
       nav("/");
     } else {
-      addDataHandler(inputData);
+      dispatch(addRecordDataHandler(inputData));
     }
 
     setInputData(initialInputsData);
@@ -78,7 +81,7 @@ export default function DataInputForm() {
 
   const onDeleteHandler = () => {
     if (window.confirm("정말로 이 지출 항목을 삭제하시겠습니까?")) {
-      deleteDataHandler(recordId);
+      dispatch(deleteRecordDataHandler({ recordId }));
       nav("/");
     }
   };

@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { RecordContext } from "../context/RecordContext";
 import formatAmount from "../utils/formatAmount";
 
 const RecordsListMainDiv = styled.div`
@@ -62,9 +61,7 @@ const AmountParagraph = styled.p`
 `;
 
 export default function RecordsList() {
-  const {
-    data: { recordsData, selectedMonth },
-  } = useContext(RecordContext);
+  const { selectedMonth, recordsData } = useSelector((state) => state.record);
 
   const filteredRecordsData = recordsData
     .filter(({ date }) => +date.split("-")[1] === +selectedMonth)
