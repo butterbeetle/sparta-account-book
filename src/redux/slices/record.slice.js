@@ -2,13 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import formatDate from "../../utils/formatDate";
 
-const initialInputsData = {
-  date: formatDate(new Date()),
-  category: "",
-  amount: "",
-  content: "",
-};
-
 const getLocalStorageData = () => {
   const initialData = {
     selectedMonth: +formatDate(new Date(), "month"),
@@ -28,8 +21,8 @@ const recordsSlice = createSlice({
   initialState,
   reducers: {
     addRecordDataHandler(state, action) {
-      const { payload } = action;
-      state.recordsData.push({ id: uuidv4(), ...payload });
+      const { newRecordData } = action.payload;
+      state.recordsData.push({ id: uuidv4(), ...newRecordData });
     },
     updateRecordDataHandler(state, action) {
       const {
@@ -50,13 +43,6 @@ const recordsSlice = createSlice({
     monthSelectHandler(state, action) {
       state.selectedMonth = action.payload;
     },
-    getInitalData(state, action) {
-      return (
-        state.recordsData.filter(
-          (recordData) => recordData.id === action.payload.id
-        ) ?? initialInputsData
-      );
-    },
   },
 });
 
@@ -65,6 +51,8 @@ export const {
   updateRecordDataHandler,
   deleteRecordDataHandler,
   monthSelectHandler,
-  getInitalData,
 } = recordsSlice.actions;
 export default recordsSlice.reducer;
+
+export const selectDataById = (state, id) =>
+  state.record.recordsData.find((item) => item.id === id);

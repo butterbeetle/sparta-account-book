@@ -1,14 +1,16 @@
-import { useContext, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import DataInput from "../components/DataInput";
-import { RecordContext } from "../context/RecordContext";
+import { resetInputData, setErrorData } from "../redux/slices/error.slice";
 import {
   addRecordDataHandler,
   deleteRecordDataHandler,
+  selectDataById,
   updateRecordDataHandler,
 } from "../redux/slices/record.slice";
+
+import { useEffect, useState } from "react";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
 
@@ -19,18 +21,11 @@ const Form = styled.form`
   background: #cbd5e1;
 `;
 
-const initialInputsData = {
+const initialInputData = {
   date: formatDate(new Date()),
   category: "",
   amount: "",
   content: "",
-};
-
-const initialErrorsData = {
-  date: false,
-  category: false,
-  amount: false,
-  content: false,
 };
 
 const inputsData = [
@@ -46,25 +41,24 @@ export default function DataInputForm() {
 
   const dispatch = useDispatch();
 
-  const { getInitialData } = useContext(RecordContext);
+  const [inputData, setInputData] = useState(initialInputData);
 
-  const [inputData, setInputData] = useState(
-    getInitialData(recordId) ?? initialInputsData
-  );
+  const data = useSelector((state) => selectDataById(state, recordId));
 
-  const [error, setError] = useState(initialErrorsData);
+  useEffect(() => {
+    if (recordId) {
+      setInputData(data);
+    }
+  }, [recordId, data]);
 
   const isUpdate = recordId ?? false;
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
-
     const validateErrors = validateInput(inputData);
 
     if (Object.values(validateErrors).some((error) => error)) {
-      setError({
-        ...initialErrorsData,
-        ...validateErrors,
-      });
+      dispatch(setErrorData({ newErrorData: validateErrors }));
       return;
     }
 
@@ -72,11 +66,11 @@ export default function DataInputForm() {
       dispatch(updateRecordDataHandler({ recordId, updatedData: inputData }));
       nav("/");
     } else {
-      dispatch(addRecordDataHandler(inputData));
+      dispatch(addRecordDataHandler({ newRecordData: inputData }));
     }
 
-    setInputData(initialInputsData);
-    setError(initialErrorsData);
+    setInputData(initialInputData);
+    dispatch(resetInputData());
   };
 
   const onDeleteHandler = () => {
@@ -94,8 +88,7 @@ export default function DataInputForm() {
           id={id}
           type={type}
           label={label}
-          inputData={inputData}
-          error={error}
+          inputData={inputData[id]}
           setInputData={setInputData}
         />
       ))}

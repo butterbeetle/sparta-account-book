@@ -8,7 +8,7 @@ export default function App() {
   return (
     <RecordContextProvider>
       <Provider store={store}>
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </Provider>
     </RecordContextProvider>
   );
