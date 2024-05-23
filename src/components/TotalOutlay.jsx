@@ -68,12 +68,14 @@ export default function TotalOutlay() {
       if (acc[category]) {
         acc[category].amount += +amount;
       } else {
-        acc[category] = { amount, bgColor: getRandomHexCode() };
+        acc[category] = { amount: +amount, bgColor: getRandomHexCode() };
       }
       return acc;
     },
     {}
   );
+
+  console.log(categoryRecordsData);
 
   return (
     <TotalOutlayDiv>
