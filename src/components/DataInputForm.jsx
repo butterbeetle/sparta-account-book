@@ -59,7 +59,7 @@ export default function DataInputForm() {
 
     if (isUpdate) {
       updateDataHandler(recordId, inputData);
-      nav("/");
+      nav("/", { replace: true });
     } else {
       addDataHandler(inputData);
     }
@@ -70,7 +70,7 @@ export default function DataInputForm() {
 
   const onDeleteHandler = () => {
     deleteDataHandler(recordId);
-    nav("/");
+    nav("/", { replace: true });
   };
 
   return (
