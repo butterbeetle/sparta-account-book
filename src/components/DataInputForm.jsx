@@ -60,7 +60,7 @@ export default function DataInputForm({
         )
       );
 
-      nav("/");
+      nav("/", { replace: true });
     } else {
       setRecordsData((prevRecords) => [
         ...prevRecords,
@@ -77,7 +77,7 @@ export default function DataInputForm({
       prevRecords.filter((prevRecord) => prevRecord.id !== inputData.id)
     );
 
-    nav("/");
+    nav("/", { replace: true });
   };
 
   return (
