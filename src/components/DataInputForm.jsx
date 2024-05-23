@@ -1,10 +1,18 @@
-import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { RecordContext } from "../context/RecordContext";
+import DataInput from "../components/DataInput";
+import { resetInputData, setErrorData } from "../redux/slices/error.slice";
+import {
+  addRecordDataHandler,
+  deleteRecordDataHandler,
+  selectDataById,
+  updateRecordDataHandler,
+} from "../redux/slices/record.slice";
+
+import { useEffect, useState } from "react";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
-import DataInput from "./DataInput";
 
 const Form = styled.form`
   display: flex;
@@ -13,97 +21,77 @@ const Form = styled.form`
   background: #cbd5e1;
 `;
 
-const initInputData = {
+const initialInputData = {
   date: formatDate(new Date()),
   category: "",
   amount: "",
   content: "",
 };
 
-const initErrorData = {
-  date: false,
-  category: false,
-  amount: false,
-  content: false,
-};
+const inputsData = [
+  { id: "date", type: "date", label: "날짜" },
+  { id: "category", type: "text", label: "항목" },
+  { id: "amount", type: "text", label: "금액" },
+  { id: "content", type: "text", label: "내용" },
+];
 
 export default function DataInputForm() {
-  const {
-    addDataHandler,
-    updateDataHandler,
-    deleteDataHandler,
-    getInitialData,
-  } = useContext(RecordContext);
   const { recordId } = useParams();
+  const nav = useNavigate();
 
-  const [inputData, setInputData] = useState(
-    getInitialData(recordId) ?? initInputData
-  );
-  const [error, setError] = useState(initErrorData);
+  const dispatch = useDispatch();
+
+  const [inputData, setInputData] = useState(initialInputData);
+
+  const data = useSelector((state) => selectDataById(state, recordId));
+
+  useEffect(() => {
+    if (recordId) {
+      setInputData(data);
+    }
+  }, [recordId, data]);
 
   const isUpdate = recordId ?? false;
-  const nav = useNavigate();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-
     const validateErrors = validateInput(inputData);
 
     if (Object.values(validateErrors).some((error) => error)) {
-      setError({
-        ...initErrorData,
-        ...validateErrors,
-      });
+      dispatch(setErrorData({ newErrorData: validateErrors }));
       return;
     }
 
     if (isUpdate) {
-      updateDataHandler(recordId, inputData);
+      dispatch(updateRecordDataHandler({ recordId, updatedData: inputData }));
       nav("/");
     } else {
-      addDataHandler(inputData);
+      dispatch(addRecordDataHandler({ newRecordData: inputData }));
     }
 
-    setInputData(initInputData);
-    setError(initErrorData);
+    setInputData(initialInputData);
+    dispatch(resetInputData());
   };
 
   const onDeleteHandler = () => {
-    deleteDataHandler(recordId);
-    nav("/");
+    if (window.confirm("정말로 이 지출 항목을 삭제하시겠습니까?")) {
+      dispatch(deleteRecordDataHandler({ recordId }));
+      nav("/");
+    }
   };
 
   return (
     <Form onSubmit={onSubmitHandler}>
-      <DataInput
-        id="date"
-        type="date"
-        label="날짜"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="category"
-        label="항목"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="amount"
-        label="금액"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="content"
-        label="내용"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
+      {inputsData.map(({ id, type, label }) => (
+        <DataInput
+          key={id}
+          id={id}
+          type={type}
+          label={label}
+          inputData={inputData[id]}
+          setInputData={setInputData}
+        />
+      ))}
       <button type="submit">{isUpdate ? "수정" : "추가"}</button>
       {isUpdate && (
         <button onClick={onDeleteHandler} type="button">

@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -78,9 +79,11 @@ export default function DataInput({
   type = "text",
   label,
   inputData,
-  error,
   setInputData,
 }) {
+  const { errorData } = useSelector((state) => state.error);
+  const maxLength = id === "content" ? 30 : 10;
+
   const onChangeHandler = (value) => {
     setInputData((prev) => ({
       ...prev,
@@ -88,27 +91,25 @@ export default function DataInput({
     }));
   };
 
-  const maxLength = id === "content" ? 30 : 10;
-
   return (
     <Div>
       <Input
         id={id}
         type={type}
-        value={inputData[id]}
+        value={inputData}
         placeholder=""
         maxLength={maxLength}
         onChange={(e) => onChangeHandler(e.target.value)}
       />
       <Label htmlFor={id}>{label}</Label>
-      {error[id] && (
+      {errorData[id] && (
         <P className="">{`${
           type === "date" ? "를" : "을"
         } 제대로 입력해주세요.`}</P>
       )}
       {type !== "date" && (
         <Span className="absolute top-0 right-0">{`${
-          (inputData[id] + "").length
+          (inputData + "").length
         }/${maxLength}`}</Span>
       )}
     </Div>

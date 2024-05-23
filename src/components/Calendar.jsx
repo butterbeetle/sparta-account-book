@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { RecordContext } from "../context/RecordContext";
+import { monthSelectHandler } from "../redux/slices/record.slice";
 
 const CalendarDiv = styled.div`
   padding: 16px;
@@ -30,10 +30,8 @@ const Calendarli = styled.li`
 `;
 
 export default function Calendar() {
-  const {
-    data: { selectedMonth },
-    selectedMonthHandler,
-  } = useContext(RecordContext);
+  const dispatch = useDispatch();
+  const { selectedMonth } = useSelector((state) => state.record);
 
   return (
     <CalendarDiv>
@@ -42,7 +40,7 @@ export default function Calendar() {
           <Calendarli
             key={month}
             $isSelected={selectedMonth == month ? true : undefined}
-            onClick={() => selectedMonthHandler(month)}
+            onClick={() => dispatch(monthSelectHandler(month))}
           >
             {month}월
           </Calendarli>
