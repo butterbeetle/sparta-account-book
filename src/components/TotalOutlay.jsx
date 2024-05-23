@@ -3,10 +3,52 @@ import { v4 as uuidv4 } from "uuid";
 import formatAmount from "../utils/formatAmount";
 import getRandomHexCode from "../utils/getRandomHexCode";
 
-const ColorDiv = styled.div`
+const TotalOutlayDiv = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  padding: 8px;
+  align-items: center;
+`;
+const TotalOutlayGraph = styled.div`
+  display: flex;
+  width: 100%;
+  height: 20px;
+`;
+
+const TotalOutlayColorDiv = styled.div`
   width: ${(props) => props.$width};
   height: 16px;
   background-color: ${(props) => props.$bgColor};
+`;
+
+const TotalOutlayLegendDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+`;
+const TotalOutlayLegend = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px;
+  border-style: solid;
+  border-color: black;
+`;
+
+const TotalOutlayLegendFlexDiv = styled.div`
+  flex: 1 1 0%;
+`;
+
+const TotalOutlayLegendCategory = styled(TotalOutlayLegendFlexDiv)`
+  display: flex;
+`;
+const TotalOutlayLegendText = styled(TotalOutlayLegendFlexDiv)`
+  text-align: end;
 `;
 
 export default function TotalOutlay({ selectedMonth, recordsData }) {
@@ -32,45 +74,42 @@ export default function TotalOutlay({ selectedMonth, recordsData }) {
   );
 
   return (
-    <div className="flex flex-col p-2 items-center">
+    <TotalOutlayDiv>
       <h1>
         {selectedMonth}월 총 지출:{formatAmount(totalAmount)}
       </h1>
-      <div className="flex w-full h-[20px]">
+      <TotalOutlayGraph>
         {Object.values(categoryRecordsData).map(({ amount, bgColor }) => (
-          <ColorDiv
+          <TotalOutlayColorDiv
             key={uuidv4()}
             $width={`${((amount / totalAmount) * 100).toFixed(2)}%`}
             $bgColor={bgColor}
-          ></ColorDiv>
+          ></TotalOutlayColorDiv>
         ))}
-      </div>
-      <div className="w-full flex flex-col items-start justify-center gap-1">
+      </TotalOutlayGraph>
+      <TotalOutlayLegendDiv>
         {Object.keys(categoryRecordsData).map((category) => (
-          <div
-            key={uuidv4()}
-            className="w-full flex items-center justify-between border-b-2 border-solid border-b-black "
-          >
-            <div className="flex flex-1">
-              <ColorDiv
+          <TotalOutlayLegend key={uuidv4()}>
+            <TotalOutlayLegendCategory>
+              <TotalOutlayColorDiv
                 $width={`16px`}
                 $bgColor={categoryRecordsData[category]["bgColor"]}
-              ></ColorDiv>
-              <div className="flex-1">{category}</div>
-            </div>
-            <div className="flex-1 text-end">
+              ></TotalOutlayColorDiv>
+              <TotalOutlayLegendCategory>{category}</TotalOutlayLegendCategory>
+            </TotalOutlayLegendCategory>
+            <TotalOutlayLegendText>
               {formatAmount(+categoryRecordsData[category]["amount"])}
-            </div>
-            <div className="flex-1 text-end">
+            </TotalOutlayLegendText>
+            <TotalOutlayLegendText>
               {(
                 (categoryRecordsData[category]["amount"] / totalAmount) *
                 100
               ).toFixed(2)}
               %
-            </div>
-          </div>
+            </TotalOutlayLegendText>
+          </TotalOutlayLegend>
         ))}
-      </div>
-    </div>
+      </TotalOutlayLegendDiv>
+    </TotalOutlayDiv>
   );
 }
