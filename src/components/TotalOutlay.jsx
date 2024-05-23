@@ -66,7 +66,7 @@ export default function TotalOutlay({ selectedMonth, recordsData }) {
       if (acc[category]) {
         acc[category].amount += +amount;
       } else {
-        acc[category] = { amount, bgColor: getRandomHexCode() };
+        acc[category] = { amount: +amount, bgColor: getRandomHexCode() };
       }
       return acc;
     },
