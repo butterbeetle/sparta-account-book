@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { RecordContext } from "../context/RecordContext";
 import formatAmount from "../utils/formatAmount";
 
 const RecordsListMainDiv = styled.div`
@@ -59,7 +61,11 @@ const AmountParagraph = styled.p`
   color: #3c98fd;
 `;
 
-export default function RecordsList({ selectedMonth, recordsData }) {
+export default function RecordsList() {
+  const {
+    data: { recordsData, selectedMonth },
+  } = useContext(RecordContext);
+
   const filteredRecordsData = recordsData
     .filter(({ date }) => +date.split("-")[1] === +selectedMonth)
     .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -73,7 +79,7 @@ export default function RecordsList({ selectedMonth, recordsData }) {
               <ContentDiv>
                 <DateParagraph>{date}</DateParagraph>
                 <CategoryDiv>
-                  {category} - <ContentParagraph>{content}</ContentParagraph>
+                  {category}:<ContentParagraph>{content}</ContentParagraph>
                 </CategoryDiv>
               </ContentDiv>
               <AmountParagraph>{formatAmount(+amount)}</AmountParagraph>

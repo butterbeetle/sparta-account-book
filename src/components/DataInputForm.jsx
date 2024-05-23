@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
+import { RecordContext } from "../context/RecordContext";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
 import DataInput from "./DataInput";
@@ -27,17 +27,21 @@ const initErrorData = {
   content: false,
 };
 
-export default function DataInputForm({
-  setRecordsData,
-  initData = initInputData,
-}) {
-  const [inputData, setInputData] = useState(initData);
+export default function DataInputForm() {
+  const {
+    addDataHandler,
+    updateDataHandler,
+    deleteDataHandler,
+    getInitialData,
+  } = useContext(RecordContext);
+  const { recordId } = useParams();
+
+  const [inputData, setInputData] = useState(
+    getInitialData(recordId) ?? initInputData
+  );
   const [error, setError] = useState(initErrorData);
-  // key값으로 id있는지 화긴
-  /**
-   * https://stackoverflow.com/questions/39282873/object-hasownproperty-yields-the-eslint-no-prototype-builtins-error-how-to
-   */
-  const isUpdate = Object.prototype.hasOwnProperty.call(initData, "id");
+
+  const isUpdate = recordId ?? false;
   const nav = useNavigate();
 
   const onSubmitHandler = (e) => {
@@ -54,18 +58,10 @@ export default function DataInputForm({
     }
 
     if (isUpdate) {
-      setRecordsData((prevRecords) =>
-        prevRecords.map((prevRecord) =>
-          prevRecord.id == inputData.id ? { ...inputData } : prevRecord
-        )
-      );
-
+      updateDataHandler(recordId, inputData);
       nav("/");
     } else {
-      setRecordsData((prevRecords) => [
-        ...prevRecords,
-        { id: uuidv4(), ...inputData },
-      ]);
+      addDataHandler(inputData);
     }
 
     setInputData(initInputData);
@@ -73,10 +69,7 @@ export default function DataInputForm({
   };
 
   const onDeleteHandler = () => {
-    setRecordsData((prevRecords) =>
-      prevRecords.filter((prevRecord) => prevRecord.id !== inputData.id)
-    );
-
+    deleteDataHandler(recordId);
     nav("/");
   };
 

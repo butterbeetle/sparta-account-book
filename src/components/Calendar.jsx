@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import { RecordContext } from "../context/RecordContext";
 
 const CalendarDiv = styled.div`
   padding: 16px;
@@ -28,19 +29,20 @@ const Calendarli = styled.li`
   cursor: pointer;
 `;
 
-export default function Calendar({ selectedMonth, setSelectedMonth }) {
-  useEffect(() => {
-    localStorage.setItem("selectedMonth", selectedMonth);
-  }, [selectedMonth]);
+export default function Calendar() {
+  const {
+    data: { selectedMonth },
+    selectedMonthHandler,
+  } = useContext(RecordContext);
 
   return (
     <CalendarDiv>
       <CalendarUl>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
           <Calendarli
-            $isSelected={selectedMonth == month ? true : undefined}
-            onClick={() => setSelectedMonth(month)}
             key={month}
+            $isSelected={selectedMonth == month ? true : undefined}
+            onClick={() => selectedMonthHandler(month)}
           >
             {month}월
           </Calendarli>
