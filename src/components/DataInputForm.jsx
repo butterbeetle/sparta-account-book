@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import DataInput from "../components/DataInput";
 import { RecordContext } from "../context/RecordContext";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
-import DataInput from "./DataInput";
 
 const Form = styled.form`
   display: flex;
@@ -13,37 +13,45 @@ const Form = styled.form`
   background: #cbd5e1;
 `;
 
-const initInputData = {
+const initialInputsData = {
   date: formatDate(new Date()),
   category: "",
   amount: "",
   content: "",
 };
 
-const initErrorData = {
+const initialErrorsData = {
   date: false,
   category: false,
   amount: false,
   content: false,
 };
 
+const inputsData = [
+  { id: "date", type: "date", label: "날짜" },
+  { id: "category", type: "text", label: "항목" },
+  { id: "amount", type: "text", label: "금액" },
+  { id: "content", type: "text", label: "내용" },
+];
+
 export default function DataInputForm() {
+  const { recordId } = useParams();
+  const nav = useNavigate();
+
   const {
     addDataHandler,
     updateDataHandler,
     deleteDataHandler,
     getInitialData,
   } = useContext(RecordContext);
-  const { recordId } = useParams();
 
   const [inputData, setInputData] = useState(
-    getInitialData(recordId) ?? initInputData
+    getInitialData(recordId) ?? initialInputsData
   );
-  const [error, setError] = useState(initErrorData);
+
+  const [error, setError] = useState(initialErrorsData);
 
   const isUpdate = recordId ?? false;
-  const nav = useNavigate();
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -51,7 +59,7 @@ export default function DataInputForm() {
 
     if (Object.values(validateErrors).some((error) => error)) {
       setError({
-        ...initErrorData,
+        ...initialErrorsData,
         ...validateErrors,
       });
       return;
@@ -64,46 +72,30 @@ export default function DataInputForm() {
       addDataHandler(inputData);
     }
 
-    setInputData(initInputData);
-    setError(initErrorData);
+    setInputData(initialInputsData);
+    setError(initialErrorsData);
   };
 
   const onDeleteHandler = () => {
-    deleteDataHandler(recordId);
-    nav("/");
+    if (window.confirm("정말로 이 지출 항목을 삭제하시겠습니까?")) {
+      deleteDataHandler(recordId);
+      nav("/");
+    }
   };
 
   return (
     <Form onSubmit={onSubmitHandler}>
-      <DataInput
-        id="date"
-        type="date"
-        label="날짜"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="category"
-        label="항목"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="amount"
-        label="금액"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
-      <DataInput
-        id="content"
-        label="내용"
-        error={error}
-        inputData={inputData}
-        setInputData={setInputData}
-      />
+      {inputsData.map(({ id, type, label }) => (
+        <DataInput
+          key={id}
+          id={id}
+          type={type}
+          label={label}
+          inputData={inputData}
+          error={error}
+          setInputData={setInputData}
+        />
+      ))}
       <button type="submit">{isUpdate ? "수정" : "추가"}</button>
       {isUpdate && (
         <button onClick={onDeleteHandler} type="button">
