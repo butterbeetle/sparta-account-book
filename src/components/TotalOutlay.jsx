@@ -8,14 +8,22 @@ const TotalOutlayDiv = styled.div`
   display: flex;
   gap: 8px;
   flex-direction: column;
-  padding: 8px;
+  padding: 12px;
   align-items: center;
+  background-color: #e2e8f0;
+  border-radius: 16px;
 `;
+const TotalOutlayDivH1 = styled.h1`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
 const TotalOutlayGraph = styled.div`
   display: flex;
   width: 100%;
   height: 20px;
 `;
+
 const TotalOutlayColorDiv = styled.div`
   width: ${(props) => props.$width};
   height: 16px;
@@ -28,6 +36,7 @@ const TotalOutlayLegendDiv = styled.div`
   justify-content: center;
   align-items: center;
   gap: 6px;
+  font-weight: bold;
 `;
 const TotalOutlayLegend = styled.div`
   width: 100%;
@@ -43,6 +52,7 @@ const TotalOutlayLegendFlexDiv = styled.div`
 `;
 const TotalOutlayLegendCategory = styled(TotalOutlayLegendFlexDiv)`
   display: flex;
+  gap: 8px;
 `;
 const TotalOutlayLegendText = styled(TotalOutlayLegendFlexDiv)`
   text-align: end;
@@ -74,9 +84,9 @@ export default function TotalOutlay() {
 
   return (
     <TotalOutlayDiv>
-      <h1>
+      <TotalOutlayDivH1>
         {selectedMonth}월 총 지출:{formatAmount(totalAmount)}
-      </h1>
+      </TotalOutlayDivH1>
       <TotalOutlayGraph>
         {Object.values(categoryRecordsData).map(({ amount, bgColor }) => (
           <TotalOutlayColorDiv

@@ -4,7 +4,8 @@ import { monthSelectHandler } from "../redux/slices/record.slice";
 
 const CalendarDiv = styled.div`
   padding: 16px;
-  background: #cbd5e1;
+  background-color: #e2e8f0;
+  border-radius: 16px;
 `;
 
 const CalendarUl = styled.ul`
@@ -21,11 +22,12 @@ const Calendarli = styled.li`
   border-width: 2px;
   border-style: solid;
   text-align: center;
+  font-weight: bold;
   width: 15%;
   min-width: 60px;
   background-color: ${({ $isSelected }) =>
-    $isSelected ? "#696b6e" : "#a1aab6"};
-  color: ${({ $isSelected }) => ($isSelected ? "white" : "black")};
+    $isSelected ? "#d2dff0" : "#fffafc"};
+  color: ${({ $isSelected }) => ($isSelected ? "gray" : "black")};
   cursor: pointer;
 `;
 

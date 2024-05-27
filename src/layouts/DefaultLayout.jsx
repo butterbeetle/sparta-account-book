@@ -8,11 +8,11 @@ const GlobalStyle = createGlobalStyle`
 html,
 body {
   height: 100%;
-  background-color: #eff2f7;
+  background-color: #f0f4f8;
 }
 
-body > #root > div {
-  height: 100%;
+body > #root  {
+    height: 100%;
 }
 
 html,

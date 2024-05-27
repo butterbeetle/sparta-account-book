@@ -43,7 +43,7 @@ const Input = styled.input`
   border-radius: 8px;
   font-size: 16px;
   color: #0a0426;
-  background-color: #f0f3f7;
+  background-color: #fffafc;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 
