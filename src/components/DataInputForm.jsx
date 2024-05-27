@@ -17,10 +17,32 @@ import validateInput from "../utils/validateInput";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 8px;
   padding: 8px;
-  background: #cbd5e1;
+  background-color: #e2e8f0;
+  border-radius: 16px;
 `;
 
+const Button = styled.button`
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0a0426;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1c1c3b;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    background-color: #0a0426;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+`;
 const initialInputData = {
   date: formatDate(new Date()),
   category: "",
@@ -92,11 +114,11 @@ export default function DataInputForm() {
           setInputData={setInputData}
         />
       ))}
-      <button type="submit">{isUpdate ? "수정" : "추가"}</button>
+      <Button type="submit">{isUpdate ? "수정" : "추가"}</Button>
       {isUpdate && (
-        <button onClick={onDeleteHandler} type="button">
+        <Button onClick={onDeleteHandler} type="button">
           삭제
-        </button>
+        </Button>
       )}
     </Form>
   );
