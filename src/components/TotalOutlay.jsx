@@ -89,19 +89,22 @@ export default function TotalOutlay() {
     (a, b) => b[1].amount - a[1].amount
   );
 
-  const items = sortedData.slice(0, 3).concat([
-    [
-      "기타",
-      sortedData.slice(3).reduce(
-        (acc, cur) => {
-          acc.amount += cur[1].amount;
-          acc.bgColor = acc.bgColor || cur[1].bgColor;
-          return acc;
-        },
-        { amount: 0, bgColor: "" }
-      ),
-    ],
-  ]);
+  const items =
+    sortedData.length < 5
+      ? sortedData
+      : sortedData.slice(0, 3).concat([
+          [
+            "기타",
+            sortedData.slice(3).reduce(
+              (acc, cur) => {
+                acc.amount += cur[1].amount;
+                acc.bgColor = acc.bgColor || cur[1].bgColor;
+                return acc;
+              },
+              { amount: 0, bgColor: "" }
+            ),
+          ],
+        ]);
 
   return (
     <TotalOutlayDiv>
