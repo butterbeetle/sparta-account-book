@@ -70,8 +70,18 @@ export default function DataInputForm() {
   useEffect(() => {
     if (recordId) {
       setInputData(data);
+      dispatch(
+        setErrorData({
+          newErrorData: {
+            date: false,
+            category: false,
+            amount: false,
+            content: false,
+          },
+        })
+      );
     }
-  }, [recordId, data]);
+  }, [dispatch, recordId, data]);
 
   const isUpdate = recordId ?? false;
 
