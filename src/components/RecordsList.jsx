@@ -6,6 +6,7 @@ import formatAmount from "../utils/formatAmount";
 const RecordsListMainDiv = styled.div`
   height: 100%;
   padding: 12px;
+  min-height: 400px;
   background-color: #e2e8f0;
   border-radius: 16px;
 `;
@@ -88,6 +89,15 @@ const AmountParagraph = styled.p`
   color: #3b82f6;
 `;
 
+const NoCost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-weight: bold;
+  font-size: 32px;
+`;
+
 export default function RecordsList() {
   const { selectedMonth, recordsData } = useSelector((state) => state.record);
 
@@ -111,8 +121,8 @@ export default function RecordsList() {
             </ListLi>
           </Link>
         ))}
-        {!filteredRecordsData.length && <div>지출이 없습니다.</div>}
       </ListUl>
+      {!filteredRecordsData.length && <NoCost>지출이 없습니다.</NoCost>}
     </RecordsListMainDiv>
   );
 }
