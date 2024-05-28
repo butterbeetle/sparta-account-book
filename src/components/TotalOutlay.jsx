@@ -89,13 +89,27 @@ export default function TotalOutlay() {
     (a, b) => b[1].amount - a[1].amount
   );
 
+  const items = sortedData.slice(0, 3).concat([
+    [
+      "기타",
+      sortedData.slice(3).reduce(
+        (acc, cur) => {
+          acc.amount += cur[1].amount;
+          acc.bgColor = acc.bgColor || cur[1].bgColor;
+          return acc;
+        },
+        { amount: 0, bgColor: "" }
+      ),
+    ],
+  ]);
+
   return (
     <TotalOutlayDiv>
       <TotalOutlayDivH1>
         {selectedMonth}월 총 지출:{formatAmount(totalAmount)}
       </TotalOutlayDivH1>
       <TotalOutlayGraph>
-        {sortedData.map(([_, { amount, bgColor }]) => (
+        {items.map(([_, { amount, bgColor }]) => (
           <TotalOutlayColorDiv
             key={uuidv4()}
             $width={`${((amount / totalAmount) * 100).toFixed(2)}%`}
@@ -104,7 +118,7 @@ export default function TotalOutlay() {
         ))}
       </TotalOutlayGraph>
       <TotalOutlayLegendDiv>
-        {sortedData.map(([category, { amount, bgColor }]) => (
+        {items.map(([category, { amount, bgColor }]) => (
           <TotalOutlayLegend key={uuidv4()}>
             <TotalOutlayLegendCategory>
               <TotalOutlayColorDiv
