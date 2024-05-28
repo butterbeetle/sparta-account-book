@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -98,31 +99,100 @@ const NoCost = styled.div`
   font-size: 32px;
 `;
 
+const SortedDiv = styled.div`
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  padding: 0 32px 6px 0;
+`;
+
+const SortedButton = styled.button`
+  font-size: 12px;
+  padding: 2px 4px;
+  font-weight: bold;
+  color: #6b7280;
+  background-color: #fffafc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d2dff0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    background-color: #a9bbd3;
+  }
+`;
+
 export default function RecordsList() {
   const { selectedMonth, recordsData } = useSelector((state) => state.record);
+  const [sortedType, setSortedType] = useState("date");
+  const [sortedOrder, setSortedOrder] = useState("desc");
+
+  const dateClickHandler = () => {
+    setSortedType("date");
+    setSortedOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
+  const amountClickHandler = () => {
+    setSortedType("amount");
+    setSortedOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
 
   const filteredRecordsData = recordsData
     .filter(({ date }) => +date.split("-")[1] === +selectedMonth)
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+    .sort((a, b) => {
+      if (sortedType === "date") {
+        if (sortedOrder === "desc") {
+          return new Date(a.date) - new Date(b.date);
+        } else {
+          return new Date(b.date) - new Date(a.date);
+        }
+      } else {
+        if (sortedOrder === "desc") {
+          return a.amount - b.amount;
+        } else {
+          return b.amount - a.amount;
+        }
+      }
+    });
 
   return (
     <RecordsListMainDiv>
-      <ListUl>
-        {filteredRecordsData.map(({ id, date, category, amount, content }) => (
-          <Link key={id} to={`/records/${id}`}>
-            <ListLi>
-              <ContentDiv>
-                <DateParagraph>{date}</DateParagraph>
-                <CategoryDiv>
-                  {category}:<ContentParagraph>{content}</ContentParagraph>
-                </CategoryDiv>
-              </ContentDiv>
-              <AmountParagraph>{formatAmount(+amount)}</AmountParagraph>
-            </ListLi>
-          </Link>
-        ))}
-      </ListUl>
-      {!filteredRecordsData.length && <NoCost>지출이 없습니다.</NoCost>}
+      {filteredRecordsData.length > 0 ? (
+        <div>
+          <SortedDiv>
+            <SortedButton onClick={() => dateClickHandler()}>
+              날짜순{sortedOrder === "desc" ? "▲" : "▼"}
+            </SortedButton>
+            <SortedButton onClick={() => amountClickHandler()}>
+              가격순{sortedOrder === "desc" ? "▲" : "▼"}
+            </SortedButton>
+          </SortedDiv>
+          <ListUl>
+            {filteredRecordsData.map(
+              ({ id, date, category, amount, content }) => (
+                <Link key={id} to={`/records/${id}`}>
+                  <ListLi>
+                    <ContentDiv>
+                      <DateParagraph>{date}</DateParagraph>
+                      <CategoryDiv>
+                        {category}:
+                        <ContentParagraph>{content}</ContentParagraph>
+                      </CategoryDiv>
+                    </ContentDiv>
+                    <AmountParagraph>{formatAmount(+amount)}</AmountParagraph>
+                  </ListLi>
+                </Link>
+              )
+            )}
+          </ListUl>
+        </div>
+      ) : (
+        <NoCost>지출이 없습니다.</NoCost>
+      )}
     </RecordsListMainDiv>
   );
 }
