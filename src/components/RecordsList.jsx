@@ -128,30 +128,32 @@ const SortedButton = styled.button`
 
 export default function RecordsList() {
   const { selectedMonth, recordsData } = useSelector((state) => state.record);
+
   const [sortedType, setSortedType] = useState("date");
-  const [sortedOrder, setSortedOrder] = useState("desc");
+  const [sortedDateOrder, setSortedDateOrder] = useState("desc");
+  const [sortedAmountOrder, setSortedAmountOrder] = useState("desc");
 
   const dateClickHandler = () => {
     setSortedType("date");
-    setSortedOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    setSortedDateOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   };
 
   const amountClickHandler = () => {
     setSortedType("amount");
-    setSortedOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    setSortedAmountOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   };
 
   const filteredRecordsData = recordsData
     .filter(({ date }) => +date.split("-")[1] === +selectedMonth)
     .sort((a, b) => {
       if (sortedType === "date") {
-        if (sortedOrder === "desc") {
+        if (sortedDateOrder === "desc") {
           return new Date(a.date) - new Date(b.date);
         } else {
           return new Date(b.date) - new Date(a.date);
         }
       } else {
-        if (sortedOrder === "desc") {
+        if (sortedAmountOrder === "desc") {
           return a.amount - b.amount;
         } else {
           return b.amount - a.amount;
@@ -165,10 +167,10 @@ export default function RecordsList() {
         <div>
           <SortedDiv>
             <SortedButton onClick={() => dateClickHandler()}>
-              날짜순{sortedOrder === "desc" ? "▲" : "▼"}
+              날짜순{sortedDateOrder === "desc" ? "▲" : "▼"}
             </SortedButton>
             <SortedButton onClick={() => amountClickHandler()}>
-              가격순{sortedOrder === "desc" ? "▲" : "▼"}
+              가격순{sortedAmountOrder === "desc" ? "▲" : "▼"}
             </SortedButton>
           </SortedDiv>
           <ListUl>
