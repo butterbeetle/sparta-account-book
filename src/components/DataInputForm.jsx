@@ -13,6 +13,8 @@ import {
 import { useEffect, useState } from "react";
 import formatDate from "../utils/formatDate";
 import validateInput from "../utils/validateInput";
+import Modal from "./ui/Modal";
+import Portal from "./ui/Portal";
 
 const Form = styled.form`
   display: flex;
@@ -64,6 +66,7 @@ export default function DataInputForm() {
   const dispatch = useDispatch();
 
   const [inputData, setInputData] = useState(initialInputData);
+  const [openModal, setOpenModal] = useState(false);
 
   const data = useSelector((state) => selectDataById(state, recordId));
 
@@ -106,10 +109,12 @@ export default function DataInputForm() {
   };
 
   const onDeleteHandler = () => {
-    if (window.confirm("정말로 이 지출 항목을 삭제하시겠습니까?")) {
-      dispatch(deleteRecordDataHandler({ recordId }));
-      nav("/", { replace: true });
-    }
+    setOpenModal(true);
+  };
+
+  const onDeleteConfirmHandler = () => {
+    dispatch(deleteRecordDataHandler({ recordId }));
+    nav("/", { replace: true });
   };
 
   return (
@@ -130,6 +135,92 @@ export default function DataInputForm() {
           삭제
         </Button>
       )}
+      {openModal && (
+        <Portal>
+          <Modal onClose={() => setOpenModal(false)}>
+            <ModalDiv>
+              <ModalTextDiv>정말로 삭제하시겠습니까?</ModalTextDiv>
+              <ModalButtonMainDiv>
+                <ModalButtonDiv>
+                  <ModalButton
+                    onClick={() => onDeleteConfirmHandler()}
+                    className="size-full"
+                    $left={true}
+                  >
+                    네
+                  </ModalButton>
+                </ModalButtonDiv>
+                <ModalButtonDiv>
+                  <ModalButton
+                    onClick={() => setOpenModal(false)}
+                    className="size-full"
+                    $left={false}
+                  >
+                    아니요
+                  </ModalButton>
+                </ModalButtonDiv>
+              </ModalButtonMainDiv>
+            </ModalDiv>
+          </Modal>
+        </Portal>
+      )}
     </Form>
   );
 }
+
+const ModalDiv = styled.div`
+  display: flex;
+  font-weight: bold;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #ffffff;
+  height: 200px;
+`;
+
+const ModalTextDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 100%;
+`;
+
+const ModalButtonMainDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-top: 2px solid #e5e7eb;
+`;
+
+const ModalButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+
+  &:first-child {
+    border-right: 2px solid #e5e7eb;
+  }
+`;
+
+const ModalButton = styled.button`
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.3s;
+
+  border-bottom-left-radius: ${(props) => props.$left && "8px"};
+  border-bottom-right-radius: ${(props) => !props.$left && "8px"};
+
+  &:hover {
+    background-color: #e5e7eb;
+  }
+
+  &:active {
+    color: #ffffff;
+    background-color: #333333;
+  }
+`;

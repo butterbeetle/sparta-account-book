@@ -166,6 +166,7 @@ export default function DefaultLayout() {
     <>
       <GlobalStyle />
       <Outlet />
+      <div id="portal" />
     </>
   );
 }
