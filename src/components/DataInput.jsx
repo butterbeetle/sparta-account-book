@@ -82,7 +82,7 @@ export default function DataInput({
   setInputData,
 }) {
   const { errorData } = useSelector((state) => state.error);
-  const maxLength = id === "content" ? 30 : 10;
+  const maxLength = id === "content" ? 30 : 8;
 
   const onChangeHandler = (value) => {
     setInputData((prev) => ({

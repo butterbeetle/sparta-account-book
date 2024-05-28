@@ -51,6 +51,9 @@ const TotalOutlayLegendFlexDiv = styled.div`
   flex: 1 1 0%;
 `;
 const TotalOutlayLegendCategory = styled(TotalOutlayLegendFlexDiv)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   gap: 8px;
 `;
@@ -82,13 +85,17 @@ export default function TotalOutlay() {
     {}
   );
 
+  const sortedData = Object.entries(categoryRecordsData).sort(
+    (a, b) => b[1].amount - a[1].amount
+  );
+
   return (
     <TotalOutlayDiv>
       <TotalOutlayDivH1>
         {selectedMonth}월 총 지출:{formatAmount(totalAmount)}
       </TotalOutlayDivH1>
       <TotalOutlayGraph>
-        {Object.values(categoryRecordsData).map(({ amount, bgColor }) => (
+        {sortedData.map(([_, { amount, bgColor }]) => (
           <TotalOutlayColorDiv
             key={uuidv4()}
             $width={`${((amount / totalAmount) * 100).toFixed(2)}%`}
@@ -97,24 +104,20 @@ export default function TotalOutlay() {
         ))}
       </TotalOutlayGraph>
       <TotalOutlayLegendDiv>
-        {Object.keys(categoryRecordsData).map((category) => (
+        {sortedData.map(([category, { amount, bgColor }]) => (
           <TotalOutlayLegend key={uuidv4()}>
             <TotalOutlayLegendCategory>
               <TotalOutlayColorDiv
                 $width={`16px`}
-                $bgColor={categoryRecordsData[category]["bgColor"]}
+                $bgColor={bgColor}
               ></TotalOutlayColorDiv>
               <TotalOutlayLegendCategory>{category}</TotalOutlayLegendCategory>
             </TotalOutlayLegendCategory>
             <TotalOutlayLegendText>
-              {formatAmount(+categoryRecordsData[category]["amount"])}
+              {formatAmount(+amount)}
             </TotalOutlayLegendText>
             <TotalOutlayLegendText>
-              {(
-                (categoryRecordsData[category]["amount"] / totalAmount) *
-                100
-              ).toFixed(2)}
-              %
+              {((amount / totalAmount) * 100).toFixed(2)}%
             </TotalOutlayLegendText>
           </TotalOutlayLegend>
         ))}

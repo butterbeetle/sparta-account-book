@@ -71,7 +71,7 @@ const CategoryDiv = styled.div`
   font-weight: bold;
   color: #3c98fd;
   width: fit-content;
-  max-width: 300px;
+  max-width: 250px;
 `;
 
 const ContentParagraph = styled.p`
@@ -83,7 +83,7 @@ const ContentParagraph = styled.p`
 `;
 
 const AmountParagraph = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   color: #3b82f6;
 `;

@@ -33,9 +33,7 @@ const recordsSlice = createSlice({
       );
     },
     deleteRecordDataHandler(state, action) {
-      const {
-        payload: { recordId },
-      } = action;
+      const { recordId } = action.payload;
       state.recordsData = state.recordsData.filter(
         (recordData) => recordData.id !== recordId
       );
