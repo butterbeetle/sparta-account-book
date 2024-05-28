@@ -97,6 +97,7 @@ export default function DataInput({
         id={id}
         type={type}
         value={inputData}
+        autoFocus={id === "category"}
         placeholder=""
         maxLength={maxLength}
         onChange={(e) => onChangeHandler(e.target.value)}
