@@ -2,19 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import formatDate from "../../utils/formatDate";
 
-const getLocalStorageData = () => {
-  const initialData = {
-    selectedMonth: +formatDate(new Date(), "month"),
-    recordsData: [],
-  };
-
-  const localStorageData = localStorage.getItem("data");
-  if (localStorageData) {
-    return JSON.parse(localStorageData);
-  } else return initialData;
+const initialState = {
+  selectedMonth: +formatDate(new Date(), "month"),
+  recordsData: [],
 };
-
-const initialState = getLocalStorageData();
 
 const recordsSlice = createSlice({
   name: "records",
